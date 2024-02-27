@@ -1,9 +1,10 @@
+import 'package:carup/MisServicios.dart';
+import 'package:carup/Services/backendServices.dart';
+import 'package:carup/mapa_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'Model/Servicio.dart';
-import 'Services/backendServices.dart';
-import 'mapa_service.dart';
 
 class DetalleServicio extends StatefulWidget {
   final Servicio servicio;
@@ -12,9 +13,14 @@ class DetalleServicio extends StatefulWidget {
 
   @override
   State<DetalleServicio> createState() => _detalleServicio();
+
+
 }
 
+
 class _detalleServicio extends State<DetalleServicio> {
+
+
   @override
   Widget build(BuildContext context) {
     Future<bool> onBackPressed() async {
@@ -24,7 +30,7 @@ class _detalleServicio extends State<DetalleServicio> {
 
     print(widget.servicio.estado);
     String estado = "";
-    switch (widget.servicio.estado) {
+    switch(widget.servicio.estado) {
       case "A":
         estado = "PENDIENTE";
         break;
@@ -44,25 +50,25 @@ class _detalleServicio extends State<DetalleServicio> {
         estado = "PENDIENTE";
     }
 
-    return WillPopScope(
+    return WillPopScope (
         onWillPop: onBackPressed,
         child: Scaffold(
-          appBar: AppBar(
-            title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Tarea N° ${widget.servicio.idTarea}"),
-                  Text(
-                    "[$estado]",
-                    style: const TextStyle(fontSize: 18),
-                  )
-                ]),
-            actions: const [],
-          ),
-          body: SingleChildScrollView(
-            child: _bodyServicio(),
-          ),
-        ));
+      appBar: AppBar(
+        title:  Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children:[
+              Text("Tarea N° " + widget.servicio.idTarea.toString()),
+              Text("[" + estado + "]", style: TextStyle(fontSize:18),)
+            ]
+            ),
+       actions: [
+
+       ],
+      ),
+      body: SingleChildScrollView(
+        child: _bodyServicio(),
+      ),
+    ));
   }
 
   Widget _bodyServicio() {
@@ -81,22 +87,22 @@ class _detalleServicio extends State<DetalleServicio> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text("#id ${widget.servicio.idSrv}"),
-            Text("Fecha: ${widget.servicio.fecha}"),
+            Text("#id " + widget.servicio.idSrv.toString()),
+            Text("Fecha: " + widget.servicio.fecha.toString()),
           ],
         ),
         Container(
-          margin: const EdgeInsets.only(left: 5, top: 10, right: 5, bottom: 50),
+          margin: EdgeInsets.only(left: 5, top: 10, right: 5, bottom: 50),
           height: 120,
           width: double.infinity,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 Theme.of(context).primaryColor,
-                const Color.fromRGBO(50, 50, 50, 1),
+                Color.fromRGBO(50, 50, 50, 1),
               ],
             ),
-            borderRadius: const BorderRadius.only(
+            borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
@@ -114,28 +120,25 @@ class _detalleServicio extends State<DetalleServicio> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   //Text(context.watch<userDataProvider>().data.token),
                   Text(
                     widget.servicio.matricula!,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   ),
                   Text(
-                    widget.servicio.marca! +
-                        " " +
-                        widget.servicio.modelo! +
-                        " " +
+                    widget.servicio.marca! + " " +
+                        widget.servicio.modelo! + " " +
                         widget.servicio.color!,
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
+                mainAxisAlignment: MainAxisAlignment.center,
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Stack(
                     children: [
@@ -156,7 +159,7 @@ class _detalleServicio extends State<DetalleServicio> {
                         child: Container(
                           height: 80,
                           width: 120,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage('assets/imgs/car.png'),
                               fit: BoxFit.fitWidth,
@@ -167,6 +170,7 @@ class _detalleServicio extends State<DetalleServicio> {
                     ],
                   ),
                 ],
+                mainAxisAlignment: MainAxisAlignment.center,
               ),
             ],
           ),
@@ -176,7 +180,7 @@ class _detalleServicio extends State<DetalleServicio> {
           children: [
             Column(
               children: [
-                const Row(
+                Row(
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
@@ -198,7 +202,7 @@ class _detalleServicio extends State<DetalleServicio> {
                 ),
                 Row(
                   children: [
-                    const Text(
+                    Text(
                       "095238984",
                       style: TextStyle(
                         fontSize: 18,
@@ -211,18 +215,15 @@ class _detalleServicio extends State<DetalleServicio> {
                       },
                     ),
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         FontAwesomeIcons.whatsapp,
                         size: 25,
                         color: Colors.green,
                       ),
                       onPressed: () {
-
-                        launchUrl(Uri.parse(
-                            'https://wa.me/598095238984?text=Buenas tardes! Aquí el auxilio mecánico, '));
+                        launchUrl(Uri.parse('https://wa.me/598095238984?text=Buenas tardes! Aquí el auxilio mecánico, '));
 
                       },
-
                     ),
                   ],
                 ),
@@ -289,7 +290,7 @@ class _detalleServicio extends State<DetalleServicio> {
             children: [
               Column(
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -314,7 +315,7 @@ class _detalleServicio extends State<DetalleServicio> {
             ],
           ),
         ),
-        const Divider(),
+        Divider(),
         widget.servicio.ciudadDestino != null
             ? Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -323,7 +324,7 @@ class _detalleServicio extends State<DetalleServicio> {
                   children: [
                     Column(
                       children: [
-                        const Row(
+                        Row(
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -351,18 +352,18 @@ class _detalleServicio extends State<DetalleServicio> {
                           widget.servicio.calleDestino ?? '',
                           style: TextStyle(fontSize: 18),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 10,
                         ),
-                        const Divider(),
+                        Divider(),
                       ],
                     )
                   ],
                 ),
               )
-            : const Divider(),
+            : Divider(),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10),
           child: Container(
             height: 80,
             decoration: BoxDecoration(
@@ -425,91 +426,92 @@ class _detalleServicio extends State<DetalleServicio> {
           ),
         ),
         Divider(),
-        widget.servicio.estado == "A"
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(150, 30),
-                      backgroundColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {
-                      backend.rechazarServicio(widget.servicio.idSrv!);
-                      // Navigator.of(context).pop();
-                      Navigator.popAndPushNamed(context, 'MisServicios');
-                    },
-                    child: const Text('RECHAZAR',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white)),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(150, 30),
-                      backgroundColor: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {
-                      backend.aceptarServicio(widget.servicio.idSrv!);
-                      Navigator.popAndPushNamed(context, 'MisServicios');
-                    },
-                    child: const Text(
-                      'ACEPTAR',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white),
-                    ),
-                  ),
-                ],
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(150, 30),
-                      backgroundColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: const Text('LLEGUÉ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white)),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: const Size(150, 30),
-                      backgroundColor: const Color.fromRGBO(194, 15, 47, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () {
-                      backend.finalizarServicio(widget.servicio.idSrv!);
-                      Navigator.popAndPushNamed(context, 'home');
-                    },
-                    child: const Text(
-                      'FINALIZAR',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white),
-                    ),
-                  ),
-                ],
+        widget.servicio.estado == "A" ?
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(150, 30),
+                backgroundColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
+              onPressed: () {
+               backend.rechazarServicio(widget.servicio.idSrv!);
+              // Navigator.of(context).pop();
+               Navigator.popAndPushNamed(context, 'MisServicios');
+              },
+              child: const Text('RECHAZAR',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(150, 30),
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                backend.aceptarServicio(widget.servicio.idSrv!);
+                Navigator.popAndPushNamed(context, 'MisServicios');
+              },
+              child: const Text(
+                'ACEPTAR',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white),
+              ),
+            ),
+          ],
+        ) : Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(150, 30),
+                backgroundColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+
+              },
+              child: const Text('LLEGUÉ',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(150, 30),
+                backgroundColor: const Color.fromRGBO(194, 15, 47, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () {
+                backend.finalizarServicio(widget.servicio.idSrv!);
+                Navigator.popAndPushNamed(context, 'home');
+              },
+              child: const Text(
+                'FINALIZAR',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white),
+              ),
+            ),
+          ],
+        ),
         SizedBox(
           height: 40,
         ),

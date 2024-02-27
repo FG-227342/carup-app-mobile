@@ -1,11 +1,13 @@
-import 'package:carupapp/userDataProvider.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:carup/Model/ServicioDTO.dart';
+import 'package:carup/detalle_servicio.dart';
+import 'package:carup/serviceRefreshProvider.dart';
+import 'package:carup/userDataProvider.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Model/Servicio.dart';
-import 'Model/ServicioDTO.dart';
 import 'Services/backendServices.dart';
-import 'detalle_servicio.dart';
 
 class MisServicios extends StatefulWidget {
   const MisServicios({super.key});
@@ -49,7 +51,7 @@ class _MisServiciosState extends State<MisServicios> {
       onWillPop: onBackPressed,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Mis Servicios"),
+          title: Text("Mis Servicios"),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
@@ -69,18 +71,18 @@ class _MisServiciosState extends State<MisServicios> {
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
                 } else if (snapshot.hasData) {
-                  if (snapshot.data!.isEmpty) {
+                  if (snapshot.data!.length == 0) {
                     return Column(
                       children: [
                         Image.asset('assets/imgs/mechanicGif.gif'),
-                        const SizedBox(
+                        SizedBox(
                           height: 60,
                         ),
-                        const Text(
+                        Text(
                           "No hay servicios por realizar",
                           style: TextStyle(fontSize: 20, color: Colors.teal),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 20,
                         ),
                         const Row(
@@ -95,7 +97,7 @@ class _MisServiciosState extends State<MisServicios> {
                             )
                           ],
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 80,
                         ),
                         ElevatedButton(
@@ -150,6 +152,8 @@ class CardState extends StatefulWidget {
 }
 
 class _cardState extends State<CardState> {
+  num contador = 15;
+  late Timer timer;
   late ServicioDTO servicio;
 
   @override
@@ -157,7 +161,17 @@ class _cardState extends State<CardState> {
     super.initState();
 
     servicio = widget.servicio;
-
+    // Iniciar el temporizador
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        // Restar 1 a la variable cada segundo
+        contador--;
+        // Verificar si el contador llegó a cero y detener el temporizador
+        if (contador <= 0) {
+          timer.cancel();
+        }
+      });
+    });
   }
 
   Future<void> obtenerServicio(int idSrv) async {
@@ -174,6 +188,20 @@ class _cardState extends State<CardState> {
 
   @override
   Widget build(BuildContext context) {
+    var myProvider =
+        Provider.of<ServiceRefreshProvider>(context, listen: false);
+/*
+    DateTime horaActual = DateTime.now();
+    String mesConCero = horaActual.month < 10 ? '0${horaActual.month}' : '${horaActual.month}';
+    DateTime horaAsignado = DateTime.parse(servicio.horaAsignado == null ? DateTime.now().toString() : "${horaActual.year}-${mesConCero}-${horaActual.day} ${servicio.horaAsignado!}");
+    Duration timeDifference = horaActual.difference(horaAsignado);
+
+    if(timeDifference.inSeconds >= 10){
+   //   ApiServices().rechazarServicio(servicio.idSrv!);
+
+    }
+*/
+
     String estado = "";
     Color? colorEstado;
     switch (servicio.estado) {
@@ -193,7 +221,7 @@ class _cardState extends State<CardState> {
     return Card(
       elevation: 3.0,
       child: ListTile(
-        leading: const Icon(
+        leading: Icon(
           Icons.taxi_alert,
           size: 30,
         ),
@@ -201,13 +229,12 @@ class _cardState extends State<CardState> {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
             "TAREA J ${servicio.idTarea}",
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(
-            "[$estado]",
+            "[${estado}]",
             style: TextStyle(color: colorEstado, fontWeight: FontWeight.bold),
           ),
-          Text("contador")
         ]),
         subtitle: Row(
           children: [
@@ -217,16 +244,13 @@ class _cardState extends State<CardState> {
                 Row(children: [
                   Text(
                     "${servicio.matricula} - ",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text("${servicio.marca} ${servicio.modelo} ${servicio.color}")
                 ]),
                 Text("${servicio.calleOrigen} ${servicio.numPuertaOrigen}"),
                 Text("esq. ${servicio.esquinaOrigen}"),
-                /*
-                Text("hora Asign: ${horaAsignado.toString()}"),
-                Text("hora Act: ${horaActual.toString()}"),
-                Text("hora Act: ${horaActual.toString()}"),*/
+
                 /*    Text("${timeDifference.inSeconds}")*/
               ],
             )
@@ -245,4 +269,10 @@ class _cardState extends State<CardState> {
     );
   }
 
+  @override
+  void dispose() {
+    // Cancelar el temporizador al salir de la pantalla para evitar fugas de memoria
+    timer.cancel();
+    super.dispose();
+  }
 }

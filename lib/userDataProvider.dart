@@ -1,8 +1,8 @@
-import 'package:carupapp/Model/UserData.dart';
+import 'package:carup/Model/UserData.dart';
 import 'package:flutter/cupertino.dart';
 
 class userDataProvider with ChangeNotifier{
-  UserData _userData = UserData();
+  UserData _userData = new UserData();
 
   UserData get data => _userData;
 

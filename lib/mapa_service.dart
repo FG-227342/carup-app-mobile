@@ -10,7 +10,7 @@ class mapa_service extends StatelessWidget {
    double? latitud;
    double? longitud;
 
-  mapa_service(this.latitud, this.longitud, {super.key});
+  mapa_service(this.latitud, this.longitud);
 
 
   @override
@@ -69,7 +69,7 @@ class mapa_service extends StatelessWidget {
               child: FloatingActionButton(
                 onPressed: () {
                   //launchUrl(Uri.parse("https://maps.google.com/?q=-34.8964125,-56.1869239&z=18"));
-                  launch("https://maps.google.com/?q=${latitud},${longitud}");
+                  launch("https://maps.google.com/?q=-${latitud},${longitud}");
                   // launch("http://maps.google.com/maps?q=${latitud},${longitud}&z=20");
                   //launch("https://www.google.com/maps/search/?api=1&query=${latitud}%2C${longitud}&zoom=21");
                 },

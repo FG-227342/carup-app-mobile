@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:carupapp/home_page.dart';
-import 'package:carupapp/userDataProvider.dart';
+import 'package:carup/home_page.dart';
+import 'package:carup/userDataProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';

@@ -1,16 +1,16 @@
 
-import 'package:carupapp/Login.dart';
-import 'package:carupapp/userDataProvider.dart';
+import 'package:carup/userDataProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'login_page.dart';
 
 class home_page extends StatelessWidget {
   const home_page({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<userDataProvider>(context, listen: false);
+   var user = Provider.of<userDataProvider>(context, listen: false);
 
 
     return Container(
@@ -25,8 +25,8 @@ class home_page extends StatelessWidget {
         appBar: AppBar(
             title: const Text('Bienvenid@s!'),
             iconTheme: IconThemeData(color: Colors.white)
-          //backgroundColor: Theme.of(context).primaryColor
-        ),
+            //backgroundColor: Theme.of(context).primaryColor
+            ),
         drawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -80,9 +80,9 @@ class home_page extends StatelessWidget {
                 title: Text('Cerrar Sesión'),
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>  Login(),
-                    ),
+                      MaterialPageRoute(
+                        builder: (context) => Login(),
+                      ),
                   );
                 },
               ),
@@ -95,8 +95,8 @@ class home_page extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Column(
               children: [
-                SizedBox(
-                    height:40),
+              SizedBox(
+              height:40),
                 SizedBox(
                   height: 210,
                   child: Card(

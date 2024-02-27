@@ -1,21 +1,26 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
-import 'package:carupapp/Model/ServicioDTO.dart';
-import 'package:carupapp/Model/UserData.dart';
+import 'package:carup/Model/ServicioDTO.dart';
+import 'package:carup/Model/UserData.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:carupapp/globals.dart' as global;
+import 'package:carup/globals.dart' as global;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+
 import '../Model/Servicio.dart';
 
 class ApiServices {
   final apiString = global.urlBackend_dev;
+//  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static String token = "";
 
 
   Future<UserData?> getLoginData(String user,String psw) async {
-    var url = '$apiString/api/authenticate';
+    var url = '${apiString}/api/authenticate';
     String playerId = OneSignal.User.pushSubscription.id!;
-    var body = jsonEncode({"username": user, "password": psw, "playerId": "$playerId"});
+    print("PLAYER ID: " + playerId);
+    var body = jsonEncode({"username": user, "password": psw, "playerId": playerId});
 
     try {
       final response = await http.post(Uri.parse(url),
